@@ -20,7 +20,8 @@ passport.use(
     {
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: "/auth/google/callback"
+      callbackURL: "/auth/google/callback",
+      proxy: true
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOne({ googleId: profile.id }).then(existingUser => {
@@ -56,5 +57,10 @@ console.log(accessToken);
     and it returns a promise
 
     in case of UnhandledPromiseRejectionWarning MongoNetworkError: failed to connect to server
-    whitelist ip address 0.0.0.0/0
+    whitelist ip address 0.0.0.0/0 -- all ip address
+*/
+
+/*
+    while deploying proxy problems can be solved either by adding proxy: true to our google strategy
+    or adding another variable to our dev and prod files and adding complete url insted of relative
 */
