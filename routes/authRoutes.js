@@ -11,7 +11,13 @@ module.exports = app => {
     })
   );
 
-  app.get("/auth/google/callback", passport.authenticate("google"));
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google"),
+    (req, res) => {
+      res.redirect("/surveys");
+    }
+  );
 
   app.get("/api/current_user", (req, res) => {
     //res.send(req.session); // session is nothing but mongo document id
@@ -20,6 +26,6 @@ module.exports = app => {
 
   app.get("/api/logout", (req, res) => {
     req.logout(); // req.logout is function that is attached to request by passport
-    res.send(req.user);
+    res.redirect("/");
   });
 };

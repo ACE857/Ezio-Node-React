@@ -23,22 +23,20 @@ passport.use(
       callbackURL: "/auth/google/callback",
       proxy: true
     },
-    (accessToken, refreshToken, profile, done) => {
-      User.findOne({ googleId: profile.id }).then(existingUser => {
-        // existing user is model instance
-        if (existingUser) {
-          // userid present
-          console.log("user present");
-          done(null, existingUser);
-        } else {
-          // user is not present
-          new User({ googleId: profile.id }).save().then(user => {
-            // user is a model instance returned by mongoose
-            done(null, user);
-          });
-          console.log("user added");
-        }
-      });
+    async (accessToken, refreshToken, profile, done) => {
+      const existingUser = await User.findOne({ googleId: profile.id });
+
+      // existing user is model instance
+      if (existingUser) {
+        // userid present
+        console.log("user present");
+        return done(null, existingUser);
+      }
+      // user is not present
+      const user = await new User({ googleId: profile.id }).save();
+      // user is a model instance returned by mongoose
+      done(null, user);
+      console.log("user added");
     }
   )
 );
