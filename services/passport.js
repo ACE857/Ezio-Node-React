@@ -29,14 +29,12 @@ passport.use(
       // existing user is model instance
       if (existingUser) {
         // userid present
-        console.log("user present");
         return done(null, existingUser);
       }
       // user is not present
       const user = await new User({ googleId: profile.id }).save();
       // user is a model instance returned by mongoose
       done(null, user);
-      console.log("user added");
     }
   )
 );
