@@ -3,6 +3,7 @@ const cookieSession = require("cookie-session");
 const bodyParser = require("body-parser");
 const mongoone = require("mongoose");
 require("./models/user"); // just execute the js file
+require("./models/survey");
 const keys = require("./config/keys");
 const passport = require("passport");
 require("./services/passport");
@@ -25,6 +26,7 @@ mongoone.connect(keys.mongoURI);
 
 require("./routes/authRoutes")(app);
 require("./routes/billingRoutes")(app);
+require("./routes/surveyRoutes")(app);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
